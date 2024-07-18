@@ -50,3 +50,18 @@ def delete(request, task_id):
         raise Http404("Task does not exist")
     task.delete()
     return redirect(index)
+
+def copy(request, task_id):
+    try:
+        task = Task.objects.get(pk=task_id)
+    except Task.DoesNotExist:
+        raise Http404("Task does not exist")
+    if request.method == 'POST':
+        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])))
+        task.save()
+        return redirect(index)
+
+    context = {
+        'task': task
+    }
+    return render(request, "todo/copy.html", context)
