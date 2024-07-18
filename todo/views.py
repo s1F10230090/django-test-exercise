@@ -65,3 +65,4 @@ def copy(request, task_id):
         'task': task
     }
     return render(request, "todo/copy.html", context)
+
